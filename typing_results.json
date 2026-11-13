@@ -1,0 +1,22 @@
+[
+    {
+        "username": "Joshua",
+        "wpm": 41.96,
+        "accuracy": 100.0,
+        "correct_chars": 105,
+        "incorrect_chars": 0,
+        "duration_seconds": 30,
+        "date": "2026-11-13",
+        "time": "00:06:45"
+    },
+    {
+        "username": "Joshua",
+        "wpm": 7.58,
+        "accuracy": 30.65,
+        "correct_chars": 19,
+        "incorrect_chars": 43,
+        "duration_seconds": 30,
+        "date": "2026-11-13",
+        "time": "12:33:58"
+    }
+]
