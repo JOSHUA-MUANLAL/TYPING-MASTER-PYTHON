@@ -16,34 +16,21 @@ class Login(tk.Frame):
             self,
             text="Typing Master",
             font=("Arial", 25, "bold")
-        ).pack(pady=25)
+        ).pack(pady=20)
 
-        tk.Label(
-            self,
-            text="Login to your account",
-            font=("Arial", 13)
-        ).pack(pady=5)
-
-        tk.Label(self, text="Email").pack(pady=5)
-
-        self.email = tk.Entry(self, width=35)
+        tk.Label(self, text="Email").pack()
+        self.email = tk.Entry(self, width=30)
         self.email.pack(pady=5)
 
-        tk.Label(self, text="Password").pack(pady=5)
-
-        self.password = tk.Entry(
-            self,
-            width=35,
-            show="*"
-        )
+        tk.Label(self, text="Password").pack()
+        self.password = tk.Entry(self, width=30, show="*")
         self.password.pack(pady=5)
 
         tk.Button(
             self,
             text="Login",
-            width=20,
             command=self.login
-        ).pack(pady=20)
+        ).pack(pady=15)
 
         tk.Label(
             self,
@@ -56,27 +43,22 @@ class Login(tk.Frame):
             command=self.root.show_register
         ).pack(pady=5)
 
+    # Login function
     def login(self):
 
         email = self.email.get().strip()
         password = self.password.get()
 
         if not email or not password:
-
-            messagebox.showerror(
-                "Error",
-                "All fields are required"
-            )
+            messagebox.showerror("Error", "Fill all fields")
             return
 
+        # Check user details
         username = verify_user(email, password)
 
         if username:
 
-            messagebox.showinfo(
-                "Success",
-                "Login successful!"
-            )
+            messagebox.showinfo("Success", "Login successful!")
 
             self.root.show_dashboard(username)
 

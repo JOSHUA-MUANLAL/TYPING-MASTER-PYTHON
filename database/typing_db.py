@@ -3,39 +3,31 @@ import json
 from pathlib import Path
 from datetime import datetime
 
+# File location
 FILE = Path(__file__).resolve().parent.parent / "typing_results.json"
 
 
 # Create file if missing
-def initialize_file():
-
-    if not FILE.exists():
-        FILE.write_text("[]", encoding="utf-8")
+if not FILE.exists():
+    FILE.write_text("[]")
 
 
-# Read all results safely
+# Read all results
 def get_results():
 
-    initialize_file()
-
-    try:
-        with open(FILE, "r", encoding="utf-8") as f:
-            data = json.load(f)
-
-            if isinstance(data, list):
-                return data
-
-            return []
-
-    except (json.JSONDecodeError, OSError):
-        return []
+    with open(FILE, "r") as file:
+        return json.load(file)
 
 
-# Save typing result
+# Save a typing result
 def save_result(username, wpm, accuracy, correct, incorrect, duration):
 
     results = get_results()
 
+    # Get current date and time
+    now = datetime.now()
+
+    # Create result
     new_result = {
         "username": username,
         "wpm": wpm,
@@ -43,22 +35,28 @@ def save_result(username, wpm, accuracy, correct, incorrect, duration):
         "correct_chars": correct,
         "incorrect_chars": incorrect,
         "duration_seconds": duration,
-        "date": datetime.now().strftime("%Y-%m-%d"),
-        "time": datetime.now().strftime("%H:%M:%S")
+        "date": now.strftime("%Y-%m-%d"),
+        "time": now.strftime("%H:%M:%S")
     }
 
+    # Add result to list
     results.append(new_result)
 
-    with open(FILE, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=4)
+    # Save to JSON
+    with open(FILE, "w") as file:
+        json.dump(results, file, indent=4)
 
 
-# Get results of a particular user
+# Get results of one user
 def get_user_results(username):
 
     results = get_results()
 
-    return [
-        result for result in results
-        if result["username"] == username
-    ]
+    user_results = []
+
+    for result in results:
+
+        if result["username"] == username:
+            user_results.append(result)
+
+    return user_results

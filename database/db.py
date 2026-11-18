@@ -1,38 +1,39 @@
 
 import json
-import os
 import hashlib
+from pathlib import Path
 
-FILE = "users.json"
-
-
-# Create JSON file if it doesn't exist
-if not os.path.exists(FILE):
-    with open(FILE, "w") as f:
-        json.dump([], f)
+# Location of users.json
+FILE = Path(__file__).resolve().parent.parent / "users.json"
 
 
-# Hash password
+# Create file if it doesn't exist
+if not FILE.exists():
+    FILE.write_text("[]")
+
+
+# Convert password into a hash
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
 
-# Read users
+# Read all users
 def get_users():
-    with open(FILE, "r") as f:
-        return json.load(f)
+    with open(FILE, "r") as file:
+        return json.load(file)
 
 
-# Register user
+# Register a new user
 def create_user(username, email, password):
 
     users = get_users()
 
-    # Check existing email
+    # Check if email already exists
     for user in users:
         if user["email"] == email:
             return False
 
+    # Create new user
     new_user = {
         "username": username,
         "email": email,
@@ -41,22 +42,22 @@ def create_user(username, email, password):
 
     users.append(new_user)
 
-    with open(FILE, "w") as f:
-        json.dump(users, f, indent=4)
+    # Save users
+    with open(FILE, "w") as file:
+        json.dump(users, file, indent=4)
 
     return True
 
 
-# Login verification
+# Verify login
 def verify_user(email, password):
 
     users = get_users()
-    hashed_password = hash_password(password)
+    password = hash_password(password)
 
     for user in users:
-        if (user["email"] == email and
-                user["password"] == hashed_password):
 
+        if user["email"] == email and user["password"] == password:
             return user["username"]
 
     return None

@@ -27,56 +27,57 @@ class Dashboard(tk.Frame):
 
         tk.Label(
             self,
-            text="Select your typing test duration",
-            font=("Arial", 13)
-        ).pack(pady=20)
+            text="Choose your test duration"
+        ).pack(pady=15)
 
+        # Start 30-second test
         tk.Button(
             self,
             text="30 Seconds",
             width=25,
-            height=2,
             command=lambda: self.start_test(30)
         ).pack(pady=10)
 
+        # Start 60-second test
         tk.Button(
             self,
             text="60 Seconds",
             width=25,
-            height=2,
             command=lambda: self.start_test(60)
         ).pack(pady=10)
 
+        # View history
         tk.Button(
             self,
-            text="View Typing History",
+            text="Typing History",
             width=25,
             command=self.show_history
-        ).pack(pady=20)
+        ).pack(pady=15)
 
+        # Logout
         tk.Button(
             self,
             text="Logout",
-            width=15,
-            command=self.logout
+            command=self.root.show_login
         ).pack(pady=10)
 
+    # Start typing test
     def start_test(self, duration):
 
         self.root.show_typing_test(
-            duration,
-            self.username
+            self.username,
+            duration
         )
 
+    # Display typing history
     def show_history(self):
 
         results = get_user_results(self.username)
 
         if not results:
-
             messagebox.showinfo(
                 "History",
-                "No typing tests completed yet."
+                "No tests completed yet"
             )
             return
 
@@ -85,21 +86,15 @@ class Dashboard(tk.Frame):
         for i, result in enumerate(results, start=1):
 
             history += (
-                f"\nTest {i}\n"
+                f"Test {i}\n"
                 f"WPM: {result['wpm']}\n"
                 f"Accuracy: {result['accuracy']}%\n"
-                f"Correct characters: {result['correct_chars']}\n"
-                f"Incorrect characters: {result['incorrect_chars']}\n"
+                f"Correct: {result['correct_chars']}\n"
+                f"Incorrect: {result['incorrect_chars']}\n"
                 f"Duration: {result['duration_seconds']} seconds\n"
-                f"Date: {result['date']} {result['time']}\n"
-                f"--------------------------\n"
+                f"Date: {result['date']}\n"
+                f"Time: {result['time']}\n"
+                "---------------------\n"
             )
 
-        messagebox.showinfo(
-            "Typing History",
-            history
-        )
-
-    def logout(self):
-
-        self.root.show_login()
+        messagebox.showinfo("Typing History", history)

@@ -13,47 +13,34 @@ class App(tk.Tk):
         super().__init__()
 
         self.title("Typing Master")
-        screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
-        self.geometry(f"{screen_width}x{screen_height}")
-        self.resizable(False, False)
+        self.geometry("900x650")
 
         self.show_login()
 
-    # Clear current page
-    def clear(self):
-
+    # Remove the current screen
+    def clear_screen(self):
         for widget in self.winfo_children():
             widget.destroy()
 
-    # Login
+    # Show login page
     def show_login(self):
+        self.clear_screen()
+        Login(self).pack(expand=True)
 
-        self.clear()
-        Login(self).pack(fill="both", expand=True)
-
-    # Register
+    # Show registration page
     def show_register(self):
+        self.clear_screen()
+        Register(self).pack(expand=True)
 
-        self.clear()
-        Register(self).pack(fill="both", expand=True)
-
-    # Dashboard
+    # Show dashboard
     def show_dashboard(self, username):
+        self.clear_screen()
+        Dashboard(self, username).pack(expand=True)
 
-        self.clear()
-        Dashboard(self, username).pack(fill="both", expand=True)
-
-    # Typing test
-    def show_typing_test(self, duration, username):
-
-        self.clear()
-
-        TypingTest(
-            self,
-            duration,
-            username
-        ).pack(fill="both", expand=True)
+    # Show typing test
+    def show_typing_test(self, username, duration):
+        self.clear_screen()
+        TypingTest(self, username, duration).pack(expand=True)
 
 
 if __name__ == "__main__":

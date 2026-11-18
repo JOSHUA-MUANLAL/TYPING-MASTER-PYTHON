@@ -18,5 +18,25 @@
         "duration_seconds": 30,
         "date": "2026-11-13",
         "time": "12:33:58"
+    },
+    {
+        "username": "Joshua",
+        "wpm": 29.15,
+        "accuracy": 66.97,
+        "correct_chars": 73,
+        "incorrect_chars": 36,
+        "duration_seconds": 30,
+        "date": "2026-11-15",
+        "time": "12:50:33"
+    },
+    {
+        "username": "Joshua",
+        "wpm": 18.91,
+        "accuracy": 97.87,
+        "correct_chars": 46,
+        "incorrect_chars": 1,
+        "duration_seconds": 30,
+        "date": "2026-11-19",
+        "time": "00:33:33"
     }
 ]

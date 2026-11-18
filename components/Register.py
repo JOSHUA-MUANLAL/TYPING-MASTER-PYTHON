@@ -1,6 +1,7 @@
 
 import tkinter as tk
 from tkinter import messagebox
+import re
 
 from database.db import create_user
 
@@ -15,89 +16,72 @@ class Register(tk.Frame):
         tk.Label(
             self,
             text="Create Account",
-            font=("Arial", 25, "bold")
-        ).pack(pady=25)
-
-        tk.Label(self, text="Username").pack()
-
-        self.username = tk.Entry(self, width=35)
-        self.username.pack(pady=5)
-
-        tk.Label(self, text="Email").pack()
-
-        self.email = tk.Entry(self, width=35)
-        self.email.pack(pady=5)
-
-        tk.Label(self, text="Password").pack()
-
-        self.password = tk.Entry(
-            self,
-            width=35,
-            show="*"
-        )
-        self.password.pack(pady=5)
-
-        tk.Button(
-            self,
-            text="Create Account",
-            width=20,
-            command=self.register
+            font=("Arial", 24, "bold")
         ).pack(pady=20)
 
+        # Username
+        tk.Label(self, text="Username").pack()
+        self.username = tk.Entry(self, width=30)
+        self.username.pack(pady=5)
+
+        # Email
+        tk.Label(self, text="Email").pack()
+        self.email = tk.Entry(self, width=30)
+        self.email.pack(pady=5)
+
+        # Password
+        tk.Label(self, text="Password").pack()
+        self.password = tk.Entry(self, width=30, show="*")
+        self.password.pack(pady=5)
+
+        # Register button
+        tk.Button(
+            self,
+            text="Register",
+            command=self.register
+        ).pack(pady=15)
+
+        # Back button
         tk.Button(
             self,
             text="Back to Login",
             command=self.root.show_login
         ).pack()
 
+    # Registration function
     def register(self):
 
         username = self.username.get().strip()
         email = self.email.get().strip()
         password = self.password.get()
 
+        # Check empty fields
         if not username or not email or not password:
-
-            messagebox.showerror(
-                "Error",
-                "All fields are required"
-            )
+            messagebox.showerror("Error", "Fill all fields")
             return
 
-        if "@" not in email or "." not in email:
+        
+        # Check email using regex
+        pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
 
-            messagebox.showerror(
-                "Error",
-                "Enter a valid email"
-            )
+        if not re.match(pattern, email):
+            messagebox.showerror("Error", "Invalid email")
             return
 
+        # Check password length
         if len(password) < 6:
-
             messagebox.showerror(
                 "Error",
-                "Password must contain at least 6 characters"
+                "Password must be at least 6 characters"
             )
             return
 
-        success = create_user(
-            username,
-            email,
-            password
-        )
+        # Save user
+        success = create_user(username, email, password)
 
         if success:
-
-            messagebox.showinfo(
-                "Success",
-                "Account created successfully!"
-            )
-
+            messagebox.showinfo("Success", "Account created!")
             self.root.show_login()
 
         else:
-
-            messagebox.showerror(
-                "Error",
-                "Email already registered!"
-            )
+            messagebox.showerror("Error", "Email already exists")
